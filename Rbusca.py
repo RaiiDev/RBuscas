@@ -1,5 +1,4 @@
 import requests
-import cv2
 import numpy as np
 from bs4 import BeautifulSoup
 import json
