@@ -1,6 +1,6 @@
 # RBuscas 🔎
 
--Ferramenta de buscas por nome
+-Ferramenta de buscas
 
 
 <h3>Como funciona?🤔</h3>
