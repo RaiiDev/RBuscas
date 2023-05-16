@@ -183,7 +183,7 @@ elif plataforma == "6":
     # busca em todas as plataformas
 
     # Google Imagens
-    url_busca = url_base_google.format(termo=termo_formatado)
+    url_busca = url_base_google_compl.format(termo=termo_formatado)
     resposta = requests.get(url_busca)
     if resposta.status_code == 200:
         soup = BeautifulSoup(resposta.text, "html.parser")
