@@ -9,7 +9,7 @@
 
 O script faz uma busca na internet pelo termo definido pelo usúario. O script pega todas as informações disponiveis no google e filtra os resultados com base na opção definida pelo usúario. Utilize este script apenas para fins educacionais!
 
-(REQUISITOS)
+(REQUISITOS)<br>
  -requests<br>
  -beautifulsoup4<br>
  -numpy<br>
