@@ -28,6 +28,6 @@ O script faz uma busca na internet pelo termo definido pelo usúario. O script p
 3- Install requirements.txt<br>
 4- python3 Rbusca.py<br>
 
-<h3>Compatibilidade</h3>
--Windows (Sistema Base)
--Termux
+<h3>Compatibilidade</h3><br>
+-Windows (Sistema Base)<br>
+-Termux<br>
