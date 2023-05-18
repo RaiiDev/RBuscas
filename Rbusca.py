@@ -5,6 +5,8 @@ import json
 import re
 import time
 import random
+
+
 # Defina a URL base da busca
 url_base_facebook = "https://www.facebook.com/search/people/?q={termo}"
 url_base_instagram = "https://www.instagram.com/web/search/topsearch/?query={termo}"
@@ -41,18 +43,17 @@ termo_formatado = termo.replace(" ", "+")
 # Solicite que o usuário escolha a plataforma
 print("Escolha a plataforma para pesquisar:")
 print("[1] Info")
-print("[2] Facebook")
+print("[2] Facebook (OFF)")
 print("[3] Instagram")
 print("[4] Buscar por termos")
 print("[5] Buscar por CPF, TELEFONE e EMAIL")
-print("[6] Buscar por CPF, TELEFONE e EMAIL (OPÇÃO 2 LENTO)")
 plataforma = input("Digite o número da plataforma: ")
 print("""
 
     """)
 if plataforma == "1":
     print("Desenvolvido por RDEV")
-    print("Ver: 1.5")
+    print("Ver: 1.7 beta")
 
 elif plataforma == "2":
     url_busca = url_base_facebook.format(termo=termo_formatado)
@@ -167,10 +168,7 @@ elif plataforma == "5":
     while len(resultados) < max_resultados:
         url_busca = url_base_google_compl.format(termo=termo_formatado, start=start)
         try:
-            headers = {
-                "User-Agent": f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/{random.randint(500, 600)}.{random.randint(0, 99)} (KHTML, like Gecko) Chrome/{random.randint(80, 89)}.0.{random.randint(4000, 5000)}.{random.randint(100, 999)} Safari/537.36",
-            }
-            resposta = requests.get(url_busca, headers=headers)
+            resposta = requests.get(url_busca)
             if resposta.status_code == 429:
                 print("Muitas solicitações! Tente novamente mais tarde.")
                 time.sleep(espera)
@@ -189,8 +187,14 @@ elif plataforma == "5":
                 resultados.append(nome)
         if len(sugestoes) == 0:
             break
-        start += 10
+
+        incremento = random.randint(5, 10)  # Gera um número aleatório entre 5 e 10
+        start += incremento
         espera = 1  # Reseta o tempo de espera para 1 segundo após uma solicitação bem-sucedida
+        progresso = (start / max_resultados) * 100  # Calcula a porcentagem de conclusão
+        print(f"Progresso: {progresso:.2f}%   ", end="\r")  # Print da porcentagem de conclusão
+        time.sleep(2)  # Tempo de pausa em segundos
+
 
     cpfs = []
     telefones = []
@@ -230,97 +234,5 @@ elif plataforma == "5":
         print("- " + telefone)
 
     print("Emails encontrados:")
-    for email in emails:
-        print("- " + email)
-
-elif plataforma == "6":
-    print("Este metodo é mais lento que a opção 1")
-    print("")
-    print("[1] Básico (Recomendado) ")
-    print("[2] Avançado")
-    print("[3] Super Avançado")
-    print("")
-
-    escolha = input("Escolha uma opção: ")
-
-    if escolha == "1":
-        max_resultados = 20
-    elif escolha == "2":
-        max_resultados = 50
-    elif escolha == "3":
-        max_resultados = 500
-    else:
-        print("Opção inválida.")
-        exit()
-
-    url_base_search_engine = "https://search.yahoo.com/search?p={termo}&b={start}"  # Defina a URL base do mecanismo de busca
-    start = 0
-
-    resultados = []
-    while len(resultados) < max_resultados:
-        url_busca = url_base_search_engine.format(termo=termo_formatado, start=start)
-        try:
-            resposta = requests.get(url_busca)
-            resposta.raise_for_status()
-            if resposta.status_code == 200:
-                soup = BeautifulSoup(resposta.text, "html.parser")
-                links = soup.select("h3 > a")
-                for link in links:
-                    titulo = link.text
-                    url = link["href"]
-                    resultados.append((titulo, url))
-            else:
-                print("Não foi possível conectar ao mecanismo de busca.")
-                break
-        except requests.exceptions.RequestException as e:
-            print(f"Ocorreu um erro ao fazer a requisição: {e}")
-            break
-
-        start += 10
-
-
-    cpfs = []
-    telefones = []
-    emails = []
-
-    for resultado in resultados:
-        titulo = resultado[0]
-        url = resultado[1]
-        try:
-            resposta = requests.get(url)
-            resposta.raise_for_status()
-            conteudo = resposta.text
-
-            # Busca CPF
-            cpf_match = re.findall(r"\d{3}\.\d{3}\.\d{3}-\d{2}", conteudo)
-            for cpf in cpf_match:
-                if cpf not in cpfs:
-                    cpfs.append(cpf)
-
-            # Busca telefone
-            telefone_match = re.findall(r"\(\d{2}\)\s\d{4,5}-\d{4}", conteudo)
-            for telefone in telefone_match:
-                if telefone not in telefones:
-                    telefones.append(telefone)
-
-            # Busca e-mail
-            email_match = re.findall(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", conteudo)
-            for email in email_match:
-                if email not in emails:
-                    emails.append(email)
-
-        except requests.exceptions.RequestException as e:
-            print(f"Ocorreu um erro ao obter o conteúdo da página: {e}")
-            continue
-
-    print("CPFs encontrados:")
-    for cpf in cpfs:
-        print("- " + cpf)
-
-    print("Telefones encontrados:")
-    for telefone in telefones:
-        print("- " + telefone)
-
-    print("E-mails encontrados:")
     for email in emails:
         print("- " + email)
