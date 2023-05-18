@@ -22,11 +22,11 @@ O script faz uma busca na internet pelo termo definido pelo usúario. O script p
 4- Execute o ambiente virtual utilizando o comando "Scripts\activate"<br>
 5- Execute o script com py ou python Rbuscas.py<br>
 
-<h3>Passos Termux</h3>
-1- Download python
-2- Navegue ate a pasta do script
-3- Install requirements.txt
-4- python3 Rbusca.py
+<h3>Passos Termux</h3><br>
+1- Download python<br>
+2- Navegue ate a pasta do script<br>
+3- Install requirements.txt<br>
+4- python3 Rbusca.py<br>
 
 <h3>Compatibilidade</h3>
 -Windows (Sistema Base)
